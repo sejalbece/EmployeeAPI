@@ -16,6 +16,7 @@ namespace Interview_API.Data
                .IsRequired()
                .HasMaxLength(100);
             builder.Property(e => e.Department)
+                .HasConversion<string>()
                .IsRequired();
             builder.Property(e => e.Salary)
                .IsRequired();
