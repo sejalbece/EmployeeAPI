@@ -47,18 +47,18 @@ namespace Interview_API.Services
         }
         
 
-        public async Task<PageResponse<ResponseEmployee>> GetEmployeeAsync(int pageNumber, int pageSize)
+        public async Task<PageResponse<ResponseEmployee>> GetEmployeeAsync(EmployeeQueryParameters parameters)
         {
-            if (pageNumber <= 0)
-                pageNumber = 1;
-            if(pageSize<=0)
-                pageSize = 10;
-            if(pageSize>100)
-                pageSize = 100;
+            if (parameters.PageNumber<= 0)
+                parameters.PageNumber = 1;
+            if(parameters.PageSize<=0)
+                parameters.PageSize = 10;
+            if(parameters.PageSize>100)
+                parameters.PageSize = 100;
             
 
 
-            var response = await _repo.GetEmployeeAsync(pageNumber, pageSize);  //employeeList, totalRecords
+            var response = await _repo.GetEmployeeAsync(parameters);  //employeeList, totalRecords
             var result = new PageResponse<ResponseEmployee> { 
                 Data = response.employees
                     .Select(emp => new ResponseEmployee
@@ -69,10 +69,10 @@ namespace Interview_API.Services
                         Department = emp.Department,
                         Salary = emp.Salary
                     }).ToList(),
-                PageNumber = pageNumber,
-                PageSize = pageSize,
+                PageNumber = parameters.PageNumber,
+                PageSize = parameters.PageSize,
                 TotalRecords = response.TotalRecords,
-                TotalPages = (int)Math.Ceiling((double)response.TotalRecords / pageSize)
+                TotalPages = (int)Math.Ceiling((double)response.TotalRecords / parameters.PageSize)
 
         };
             
