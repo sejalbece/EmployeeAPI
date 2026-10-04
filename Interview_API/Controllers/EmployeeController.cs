@@ -71,9 +71,9 @@ namespace Interview_API.Controllers
         
         
         [HttpGet]
-        public async Task<ActionResult<PageResponse<ResponseEmployee>>> GetEmployeePage([FromQuery] int pageNumber=1, [FromQuery] int pageSize=10)
+        public async Task<ActionResult<PageResponse<ResponseEmployee>>> GetEmployeePage([FromQuery]EmployeeQueryParameters parameters)
         {
-            var result = await _employeeService.GetEmployeeAsync(pageNumber, pageSize);
+            var result = await _employeeService.GetEmployeeAsync(parameters);
             return Ok(result);
         }
     }

@@ -1,4 +1,5 @@
-﻿using Interview_API.Entities;
+﻿using Interview_API.DTOs;
+using Interview_API.Entities;
 
 namespace Interview_API.Repositories
 {
@@ -12,6 +13,6 @@ namespace Interview_API.Repositories
 
         Task<int> SaveChangesAsync();
 
-        Task<(List<Employee> employees, int TotalRecords)> GetEmployeeAsync(int pageNumber, int pageSize);
+        Task<(List<Employee> employees, int TotalRecords)> GetEmployeeAsync(EmployeeQueryParameters parameters);
     }
 }
