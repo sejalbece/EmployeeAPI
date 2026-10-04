@@ -11,6 +11,6 @@ namespace Interview_API.Services
 
         //Task<List<ResponseEmployee>> GetAllEmployee();
 
-        Task<PageResponse<ResponseEmployee>> GetEmployeeAsync(int pageNumber, int pageSize);
+        Task<PageResponse<ResponseEmployee>> GetEmployeeAsync(EmployeeQueryParameters parameters);
     }
 }
