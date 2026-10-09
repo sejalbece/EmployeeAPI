@@ -15,6 +15,6 @@ namespace Interview_API.DTOs
         
         [Required]
         public double Salary { get; set; }
-        public DateTime CreatedDate { get; set; }
+        //public DateTime CreatedDate { get; set; }
     }
 }

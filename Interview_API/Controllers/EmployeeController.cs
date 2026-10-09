@@ -3,11 +3,13 @@ using Interview_API.Entities;
 using Interview_API.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace Interview_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableRateLimiting("fixed")]
     public class EmployeeController : ControllerBase
     {
         private readonly IEmployeeService _employeeService;

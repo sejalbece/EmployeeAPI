@@ -9,6 +9,7 @@ namespace Interview_API.DTOs
         public string Email { get; set; }
         public EmployeeDepartment Department { get; set; }
         public double Salary { get; set; }
+        public DateTime CreatedDate { get; set; } 
 
     }
 }

@@ -1,0 +1,279 @@
+<div class="employee-page">
+
+    <!-- =========================
+       HEADER
+       ========================= -->
+    <header class="page-header">
+        <div class="brand">
+            <div class="brand-icon">EM</div>
+            <div>
+                <h2>Employee Management</h2>
+                <p class="subtitle">Create, search and manage your team in one place</p>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <span class="stat-label">Total Employees</span>
+            <span class="stat-value">{{ totalRecords }}</span>
+        </div>
+    </header>
+
+
+    <div class="layout">
+
+        <!-- =========================
+           CREATE / UPDATE FORM
+           ========================= -->
+        <aside class="card employee-form" [class.editing]="selectedEmployeeId !== null">
+
+            <div class="card-header">
+                <h3>
+                    {{ selectedEmployeeId === null
+                    ? 'Create Employee'
+                    : 'Update Employee' }}
+                </h3>
+                <span class="mode-pill" *ngIf="selectedEmployeeId !== null">
+                    Editing #{{ selectedEmployeeId }}
+                </span>
+            </div>
+
+            <form [formGroup]="employeeForm" (ngSubmit)="saveEmployee()">
+
+                <div class="field">
+                    <label for="name">Name</label>
+
+                    <input id="name" type="text" formControlName="name" placeholder="e.g. Jane Doe" />
+
+                    <small class="error" *ngIf="
+                employeeForm.get('name')?.touched &&
+                employeeForm.get('name')?.invalid
+              ">
+                        Name is required.
+                    </small>
+                </div>
+
+
+                <div class="field">
+                    <label for="email">Email</label>
+
+                    <input id="email" type="email" formControlName="email" placeholder="jane@company.com" />
+
+                    <small class="error" *ngIf="
+                employeeForm.get('email')?.touched &&
+                employeeForm.get('email')?.invalid
+              ">
+                        Please enter a valid email.
+                    </small>
+                </div>
+
+
+                <div class="field-row">
+                    <div class="field">
+                        <label for="departmentForm">Department</label>
+
+                        <select id="departmentForm" formControlName="department">
+                            <option *ngFor="let department of departments" [ngValue]="department">
+                                {{ department }}
+                            </option>
+                        </select>
+                    </div>
+
+
+                    <div class="field">
+                        <label for="salary">Salary</label>
+
+                        <input id="salary" type="number" formControlName="salary" />
+                    </div>
+                </div>
+
+
+                <div class="form-buttons">
+
+                    <button type="submit" class="btn btn-primary">
+                        {{ selectedEmployeeId === null ? 'Create' : 'Update' }}
+                    </button>
+
+                    <button type="button" class="btn btn-ghost" *ngIf="selectedEmployeeId !== null"
+                        (click)="cancelEdit()">
+                        Cancel
+                    </button>
+
+                </div>
+
+            </form>
+
+        </aside>
+
+
+        <section class="card employee-list">
+
+            <!-- =========================
+               SEARCH & FILTER
+               ========================= -->
+            <div class="filters">
+
+                <div class="field search-field">
+                    <label for="search">Search</label>
+                    <input id="search" type="text" [(ngModel)]="search" placeholder="Search by name or email"
+                        (keyup.enter)="applyFilters()" />
+                </div>
+
+                <div class="field">
+                    <label for="department">Department</label>
+
+                    <select id="department" [(ngModel)]="selectedDepartment">
+                        <option [ngValue]="null">All Departments</option>
+                        @for(department of departments; track department)
+                        {
+                        <option [ngValue]="department">
+                            {{ department }}
+                        </option>
+
+                        }
+
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="sortBy">Sort By</label>
+
+                    <select id="sortBy" [(ngModel)]="sortBy">
+                        <option value="">Default</option>
+                        <option value="name">Name</option>
+                        <option value="email">Email</option>
+                        <option value="salary">Salary</option>
+                        <option value="createdDate">Created Date</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="sortOrder">Order</label>
+
+                    <select id="sortOrder" [(ngModel)]="sortOrder">
+                        <option value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
+                    </select>
+                </div>
+
+                <div class="filter-buttons">
+                    <button type="button" class="btn btn-primary" (click)="applyFilters()">
+                        Search
+                    </button>
+
+                    <button type="button" class="btn btn-ghost" (click)="clearFilters()">
+                        Clear
+                    </button>
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+               EMPLOYEE LIST
+               ========================= -->
+            <div class="card-header list-header">
+                <h3>Employees</h3>
+                <span class="muted">Total Employees: {{ totalRecords }}</span>
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Department</th>
+                            <th class="num">Salary</th>
+                            <th>Created Date</th>
+                            <th class="actions-col">Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr *ngFor="let employee of employees"
+                            [class.row-active]="employee.employeeId === selectedEmployeeId">
+
+                            <td class="muted">#{{ employee.employeeId }}</td>
+
+                            <td>
+                                <div class="person">
+                                    <span class="avatar">{{ employee.name.charAt(0) }}</span>
+                                    <span class="person-name">{{ employee.name }}</span>
+                                </div>
+                            </td>
+
+                            <td class="muted">{{ employee.email }}</td>
+
+                            <td>
+                                <span class="badge" [attr.data-dept]="employee.department">
+                                    {{ employee.department }}
+                                </span>
+                            </td>
+
+                            <td class="num">
+                                {{ employee.salary | currency }}
+                            </td>
+
+                            <td class="muted">
+                                {{ employee.createdDate | date:'MM/dd/yyyy' }}
+                            </td>
+
+                            <td class="actions-col">
+                                <div class="row-actions">
+
+                                    <button type="button" class="btn btn-sm btn-outline"
+                                        (click)="editEmployee(employee.employeeId)">
+                                        Edit
+                                    </button>
+
+                                    <button type="button" class="btn btn-sm btn-danger"
+                                        (click)="deleteEmployee(employee.employeeId)">
+                                        Delete
+                                    </button>
+
+                                </div>
+                            </td>
+
+                        </tr>
+
+                        <tr *ngIf="employees.length === 0">
+                            <td colspan="7" class="empty-state">
+                                No employees found.
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+            </div>
+
+
+            <!-- =========================
+               PAGINATION
+               ========================= -->
+            <div class="pagination">
+
+                <button type="button" class="btn btn-ghost" [disabled]="currentPage === 1"
+                    (click)="goToPage(currentPage - 1)">
+                    ‹ Previous
+                </button>
+
+                <span class="page-info">
+                    Page <strong>{{ currentPage }}</strong> of <strong>{{ totalPages }}</strong>
+                </span>
+
+                <button type="button" class="btn btn-ghost" [disabled]="currentPage === totalPages"
+                    (click)="goToPage(currentPage + 1)">
+                    Next ›
+                </button>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</div>
