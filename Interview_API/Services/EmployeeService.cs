@@ -94,6 +94,7 @@ namespace Interview_API.Services
                 Email = response.Email,
                 Department = response.Department,
                 Salary = response.Salary,
+                CreatedDate = response.CreatedDate
             };
             return ResponseEmp;
         }
