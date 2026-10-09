@@ -19,15 +19,15 @@ The project was built step by step. Each version adds a new layer on top of the 
 - Global exception handling middleware
 - Swagger / OpenAPI documentation
 
-### v2 – Querying
+### v2 – Querying & Rate Limiting
 - Pagination (`pageNumber`, `pageSize`) with total records and total pages
 - Search by name or email
 - Filter by department
 - Sorting by name, email, salary or created date (ascending / descending)
-
-### v3 – Full-stack
 - Rate limiting: fixed window of 20 requests per 10 seconds, returns `429 Too Many Requests`
-- CORS policy for the Angular client
+- CORS policy for front-end clients
+
+### v3 – Angular UI
 - Angular UI:
   - Create / update form with validation
   - Employee table with search, department filter, sorting and pagination
