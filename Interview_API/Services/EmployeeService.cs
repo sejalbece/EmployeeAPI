@@ -61,14 +61,7 @@ namespace Interview_API.Services
             var response = await _repo.GetEmployeeAsync(parameters);  //employeeList, totalRecords
             var result = new PageResponse<ResponseEmployee> { 
                 Data = response.employees
-                    .Select(emp => new ResponseEmployee
-                    {
-                        EmployeeId = emp.EmployeeId,
-                        Name = emp.Name,
-                        Email = emp.Email,
-                        Department = emp.Department,
-                        Salary = emp.Salary
-                    }).ToList(),
+                    .Select(MapToResponse).ToList(),
                 PageNumber = parameters.PageNumber,
                 PageSize = parameters.PageSize,
                 TotalRecords = response.TotalRecords,
@@ -88,15 +81,7 @@ namespace Interview_API.Services
                 throw new NotFoundException($"Employee with ID {id}was not found");
             }               
 
-            var ResponseEmp = new ResponseEmployee { 
-                EmployeeId = response.EmployeeId,
-                Name = response.Name,
-                Email = response.Email,
-                Department = response.Department,
-                Salary = response.Salary,
-                CreatedDate = response.CreatedDate
-            };
-            return ResponseEmp;
+            return MapToResponse(response);
         }
 
         public async Task<ResponseEmployee?> UpdateEmployeeAsync(UpdateEmployee request)
@@ -127,7 +112,8 @@ namespace Interview_API.Services
                 Name = e.Name,
                 Email = e.Email,
                 Department = e.Department,
-                Salary = e.Salary
+                Salary = e.Salary,
+                CreatedDate = e.CreatedDate
             };
 
             return response;
