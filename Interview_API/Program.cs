@@ -1,9 +1,10 @@
-using Interview_API.Data;
+﻿using Interview_API.Data;
 using Interview_API.Middleware;
 using Interview_API.Repositories;
 using Interview_API.Services;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -62,7 +63,15 @@ builder.Services.AddControllers()
                 });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Employee Management API",
+        Version = "v1",
+        Description = "REST API for managing employees with pagination, search, filtering, sorting and rate limiting."
+    });
+});
 
 var app = builder.Build();
 app.UseCors("AllowAngular");
@@ -73,7 +82,8 @@ app.UseRateLimiter();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Employee Management API v1"));
 }
 
 app.UseMiddleware<GlobalExceptionMiddleware>();
