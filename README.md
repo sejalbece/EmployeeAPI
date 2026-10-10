@@ -4,9 +4,7 @@ A full-stack employee management app built with **ASP.NET Core 8 Web API**, **En
 
 The project was built step by step. Each version adds a new layer on top of the previous one.
 
-<!-- Add a screenshot of the UI here, e.g.:
-![Employee Management UI](docs/screenshot.png)
--->
+![Employee Management UI](docs/screenshots/02-edit-mode.png)
 
 ---
 
@@ -33,6 +31,31 @@ The project was built step by step. Each version adds a new layer on top of the 
   - Employee table with search, department filter, sorting and pagination
   - Edit and delete actions
   - Responsive layout
+
+---
+
+## Screenshots
+
+**Filter by department and sort by salary (server-side)**
+
+![Filter and sort](docs/screenshots/03-filter-sort.png)
+
+**API documentation (Swagger)**
+
+![Swagger](docs/screenshots/05-swagger.png)
+
+<details>
+<summary>More screenshots</summary>
+
+**Default list view**
+
+![Dashboard](docs/screenshots/01-dashboard.png)
+
+**Mobile layout**
+
+<img src="docs/screenshots/04-mobile.png" alt="Mobile layout" width="320" />
+
+</details>
 
 ---
 
